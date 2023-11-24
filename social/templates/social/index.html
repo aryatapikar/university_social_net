@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taskbar Demo</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .taskbar {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .post {
+            align-self: flex-start;
+            background-color: gray;
+            width: 60%; /* adjust as needed */
+            max-width: 600px; /* adjust as needed */
+            padding: 20px; /* adjust as needed */
+            margin-bottom: 20px; /* adjust as needed */
+            margin-left: 10%; /* adjust as needed */
+        }
+
+        .user-list {
+            position: fixed;
+            right: 0;
+            top: 50;
+            height: 100vh;
+            width: 20%; /* adjust as needed */
+            overflow-y: auto;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+        }
+
+        .user-list h2 {
+            margin-bottom: 10px;
+        }
+
+        .user-list ul {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .user-list li {
+            width: 80%;
+            min-width: 250px;
+            background-color: #787474;
+            color: #fff;
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .user-list button:hover {
+            background-color: #555;
+        }
+
+        /* Updated styles for dropdown */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #333;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: #fff;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #555;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* New styles for modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 2;
+        }
+
+        .modal textarea {
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        .modal img {
+            max-width: 100%;
+            max-height: 200px;
+            margin-bottom: 10px;
+        }
+        
+        .post-id {
+            float: left;
+        }
+        
+        .post-username {
+            float: right;
+        }
+        
+        .post-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            margin-top: 10px;
+        }
+        
+        .post-caption {
+            display: block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="taskbar">
+        <nav>
+            <ul>
+                <li><a href="{% url 'social:index' %}">Home</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Profile</a>
+                    <div class="dropdown-content">
+                        <a href="{% url 'user_profs:index' %}">My Profile</a>
+                        <a href="{% url 'social:logout' %}">Logout</a>
+                    </div>
+                </li>
+                <li><button onclick="openModal()">New Post</button></li>
+            </ul>
+        </nav>
+    </div>
+    <main>
+        <div>
+            <h1>Welcome to the Home Page</h1>
+            <p>This is the main content of your home page.</p>
+
+            <!-- Existing posts ... -->
+
+            <!-- Add more posts as needed -->
+        </div>
+        
+        {% for post in posts %}
+            <div class="post">
+                <div class="post-id">
+                    <span>Post ID:</span>
+                    <span>{{ post.0 }}</span>
+                </div>
+                <div class="post-username">
+                    <span>Post By:</span>
+                    <span>{{ post.1 }}</span>
+                </div>
+                {% if post.3 != 'No photo' %}
+                    <img class="post-image" src="data:image/jpeg;base64,{{ post.3 }}" alt="">
+                {% else %}
+                    <p>No photo</p>
+                {% endif %}
+                <p class="post-caption">{{ post.2 }}</p>
+                <p>Comments:</p>
+                <!-- Add a form for posting comments -->
+                <form method="post" action = "{% url 'social:comment' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="post_id" value="{{ post.0 }}">
+                    <input type="text" name="comment" style="width: 490px;">
+                    <input type="submit" value="Post comment">
+                </form>
+
+                <!-- Add a section for displaying comments -->
+                {% for comment in post.4 %}
+                <div class="comment" style="background-color: #333; color: #fff; padding: 10px; margin: 10px 0;">
+                    <strong>{{ comment.0 }}</strong>
+                    <p>{{ comment.1 }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <div class="user-list">
+            <h2>Users in your class</h2>
+            <ul>
+                {% for username in lusernames %}
+                    <li>{{ username }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </main>
+
+    <!-- Modal for creating a new post with image upload -->
+    <form id="postForm" class="modal" action="{% url 'social:add_post' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" id="postImage" name="photo" accept="image/*" onchange="previewImage()">
+        <img id="imagePreview" alt="Preview">
+        <textarea id="postText" name="caption" placeholder="Type your post here..."></textarea>
+        <button type="submit">Post</button>
+    </form>
+
+    <script>
+        function openModal() {
+            // Display the modal when the "New Post" button is clicked
+            document.getElementById('postForm').style.display = 'block';
+        }
+
+        function addPost() {
+            document.getElementById('postForm').submit();
+        }
+
+        // Preview the selected image in the modal
+        function previewImage() {
+            var input = document.getElementById('postImage');
+            var preview = document.getElementById('imagePreview');
+
+            var file = input.files[0];
+            var reader = new FileReader();
+
+            reader.onloadend = function () {
+                preview.src = reader.result;
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = "";
+            }
+        }
+    </script>
+</body>
+</html>

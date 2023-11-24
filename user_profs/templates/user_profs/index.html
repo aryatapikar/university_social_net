@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <style>
+        /* Add your styles for the profile page here */
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .taskbar {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between; /* Align buttons to the lower left corner */
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #333;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: #fff;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #555;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .profile-header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .profile-image {
+            max-width: 200px;
+            border-radius: 50%;
+            margin: 20px auto;
+            display: block;
+        }
+
+        .profile-details {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+        }
+
+        .profile-details h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .profile-details p {
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-header">
+        <h1>My Profile</h1>
+    </div>
+    <div class="taskbar">
+        <nav>
+            <ul>
+                <li><a href="{% url 'social:index' %}">Home</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Profile</a>
+                    <div class="dropdown-content">
+                        <a href="{% url 'user_profs:index' %}">My Profile</a>
+                        <a href="{% url 'social:logout' %}">Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <img class="profile-image" src="your_profile_image.jpg" alt="Profile Image">
+    <div class="profile-details">
+        {% for student in students %}
+            <h2>Your Name: {{ student.name }}</h2>
+            <h2>Student ID: {{ student.student_id }}</h2>
+            <h2>Phone No: {{ student.phone_no }}</h2>
+            <h2>Semester: {{ student.semester }}</h2>
+            <h2>You are a: {{ student.stu_teach }}</h2>
+            <h2>Section: {{ student.section }}</h2>
+            <h2>Username: {{ student.username }}</h2>
+            <h2>Posts: {{ student.posts }}</h2>
+        {% endfor %}
+    </div>
+
+    <!-- Add a div container around the buttons -->
+    <div style="text-align: center;">
+        <a href="{% url 'user_profs:edit' %}"><button style="background-color: #4CAF50; color: #ffffff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Edit Profile</button></a>
+            
+        <!-- Delete Profile Button -->
+        <form method="post" action="{% url 'user_profs:delete' %}" style="display: inline-block;">
+            {% csrf_token %}
+            <button type="submit" style="background-color: #4CAF50; color: #ffffff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Delete Profile</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

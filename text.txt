@@ -1,0 +1,4 @@
+    <a href="/social/"><button>Go to Social Page</button></a>
+    <a href="/user_profs/"><button>Go to Profile Page</button></a>
+
+    python manage.py runserver
