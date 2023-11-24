@@ -4,7 +4,7 @@ from mysql.connector import Error
 from .forms import EditProfileForm
 
 def index(request):
-    cnx = mysql.connector.connect(user='root', password='mysql',
+    cnx = mysql.connector.connect(user='root', password='Arya@123',
                                 host='127.0.0.1',
                                 database='social')
     cursor = cnx.cursor()
@@ -34,7 +34,7 @@ def index(request):
 
 def delete(request):
     if request.method == 'POST':
-        cnx = mysql.connector.connect(user='root', password='mysql',
+        cnx = mysql.connector.connect(user='root', password='Arya@123',
                                     host='127.0.0.1',
                                     database='social')
         cursor = cnx.cursor()
@@ -54,7 +54,7 @@ def delete(request):
         return redirect('social:logout')
     
 def go_to_edit(request):
-    cnx = mysql.connector.connect(user='root', password='mysql',
+    cnx = mysql.connector.connect(user='root', password='Arya@123',
                                 host='127.0.0.1',
                                 database='social')
     cursor = cnx.cursor()
@@ -88,7 +88,7 @@ def save_edit(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
 
-            cnx = mysql.connector.connect(user='root', password='mysql',
+            cnx = mysql.connector.connect(user='root', password='Arya@123',
                                         host='127.0.0.1',
                                         database='social')
             cursor = cnx.cursor()

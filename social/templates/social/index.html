@@ -15,9 +15,9 @@
         }
 
         .taskbar {
-            background-color: #333;
+            background-color: rgb(33, 150, 111);
             color: #fff;
-            padding: 10px 0;
+            padding: 10px 20px;
         }
 
         nav ul {
@@ -45,7 +45,7 @@
         
         .post {
             align-self: flex-start;
-            background-color: gray;
+            background-color: rgb(123, 201, 175);
             width: 60%; /* adjust as needed */
             max-width: 600px; /* adjust as needed */
             padding: 20px; /* adjust as needed */
@@ -79,7 +79,7 @@
         .user-list li {
             width: 80%;
             min-width: 250px;
-            background-color: #787474;
+            background-color: rgb(33, 150, 111);
             color: #fff;
             padding: 8px;
             border: none;
@@ -88,7 +88,7 @@
         }
 
         .user-list button:hover {
-            background-color: #555;
+            background-color: rgb(27, 127, 94);
         }
 
         /* Updated styles for dropdown */
@@ -181,8 +181,8 @@
     </div>
     <main>
         <div>
-            <h1>Welcome to the Home Page</h1>
-            <p>This is the main content of your home page.</p>
+            <h1>Welcome to your own University Social page</h1>
+            <p>Know what your friends are up to! </p>
 
             <!-- Existing posts ... -->
 
@@ -204,19 +204,19 @@
                 {% else %}
                     <p>No photo</p>
                 {% endif %}
-                <p class="post-caption">{{ post.2 }}</p>
+                <h2 class="post-caption">{{ post.2 }}</h2>
                 <p>Comments:</p>
                 <!-- Add a form for posting comments -->
                 <form method="post" action = "{% url 'social:comment' %}">
                     {% csrf_token %}
                     <input type="hidden" name="post_id" value="{{ post.0 }}">
-                    <input type="text" name="comment" style="width: 490px;">
+                    <input type="text" name="comment" style="width: 480px;">
                     <input type="submit" value="Post comment">
                 </form>
 
                 <!-- Add a section for displaying comments -->
                 {% for comment in post.4 %}
-                <div class="comment" style="background-color: #333; color: #fff; padding: 10px; margin: 10px 0;">
+                <div class="comment" style="background-color: white; color: rgb(2, 138, 58); padding: 5px; margin: 10px 0;">
                     <strong>{{ comment.0 }}</strong>
                     <p>{{ comment.1 }}</p>
                 </div>

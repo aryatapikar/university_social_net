@@ -49,7 +49,7 @@ def login(request):
             if stu_teach is None:
                 messages.error(request, 'Invalid username or password.[1]')
                 return redirect('landing:login')
-            if stu_teach == 'student':
+            if stu_teach[0] == 'student':
                 cursor.execute("SELECT stu_password FROM {} WHERE username = '{}'".format(stu_teach[0], username))
             else:
                 cursor.execute("SELECT t_password FROM {} WHERE username = '{}'".format(stu_teach[0], username))

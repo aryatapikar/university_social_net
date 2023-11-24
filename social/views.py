@@ -6,7 +6,7 @@ from .forms import CommentForm
 
 def index(request):
     # Connect to the database
-    cnx = mysql.connector.connect(user='root', password='mysql',
+    cnx = mysql.connector.connect(user='root', password='Arya@123',
                                 host='127.0.0.1',
                                 database='social')
     cursor = cnx.cursor()
@@ -71,7 +71,7 @@ def add_post(request):
             photo = form.cleaned_data.get('photo')
             print("$$", photo)
             if caption or photo:
-                cnx = mysql.connector.connect(user='root', password='mysql',
+                cnx = mysql.connector.connect(user='root', password='Arya@123',
                                             host='127.0.0.1',
                                             database='social')
                 cursor = cnx.cursor()
@@ -102,7 +102,7 @@ def comment(request):
         if form.is_valid():
             post_id = form.cleaned_data['post_id']
             comment_text = form.cleaned_data['comment']
-            cnx = mysql.connector.connect(user='root', password='mysql', host='127.0.0.1', database='social')
+            cnx = mysql.connector.connect(user='root', password='Arya@123', host='127.0.0.1', database='social')
             cursor = cnx.cursor()
             add_comment = ("INSERT INTO comments (postid, username, comment) VALUES (%s, %s, %s)")
             cursor.execute(add_comment, (post_id, request.session['username'], comment_text))
